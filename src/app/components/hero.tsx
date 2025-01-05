@@ -1,7 +1,6 @@
 
-// import { ulForr } from '@/sanity/lib/image'
-import { urlFor } from '@/sanity/lib/image'
-import Image from 'next/image'
+import { urlFor } from '@/sanity/lib/image' //sanitynin görsel urlni oluşturmak için kullanılır
+import Image from 'next/image' //optimşze edilmiş görseller için next.js bileşeni
 import Link from 'next/link'
 import React from 'react'
 

@@ -1,13 +1,15 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+
 interface Comment {
     id:number,
     text:string
 }
 const CommentSection:React.FC=()=> {
-    const [comments,setComments]=useState<Comment[]>([])
-    const [newComment,setNewComment]=useState<string>("")
+    const [comments,setComments]=useState<Comment[]>([]) //tüm yorumların listesini tutar
+    const [newComment,setNewComment]=useState<string>("")// kullanıcının giriş alanına yazdığı yeni yorumu saklar
 
+    //sayfa yğklendiğinde localdeki yorumları alıp comments statine yükler
     useEffect(()=> {
         const storedComments=localStorage.getItem("comments")
         if(storedComments) {
@@ -18,13 +20,15 @@ const CommentSection:React.FC=()=> {
     useEffect(()=> {
         localStorage.setItem("comments", JSON.stringify(comments))
     },[comments])
-
+//yeni yorum ekleme fonksiyonu
     const handleAddComment=()=> {
         if(newComment.trim()){
             const newCommentObj:Comment= {
                 id:Date.now(),
                 text:newComment
             }
+            setComments([...comments,newCommentObj]) //mevcut yorumların sonuna yeni yorum ekler
+            setNewComment("") //giriş alanını temizler
         }
     }
   return (
