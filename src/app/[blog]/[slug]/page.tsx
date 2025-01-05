@@ -38,7 +38,7 @@ export default async function page({params:{slug}}:{params:{slug:string}}) { //s
       <section className="px-2 sm:px-8 md:px-12 flex gap-2 xs:gap-4 sm:gap-6 items-start xs:items-center justify-start">
         {/*eklenen sabit görsel sanityden de çekilebilir */}
         <Image
-          src={"https://www.waleshideaway.co.uk/assets/images/demo/720x400/1-min.jpg"}
+          src={""}
           width={200}
           height={200}
           alt="author"

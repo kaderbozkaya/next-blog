@@ -4,6 +4,7 @@ import { client } from '@/sanity/lib/client'
 import Hero from './components/hero'
 
 
+
  const  Homepage = async() => {
   //sanityden tüm blog içeriklerini çekmek için:
      const query = `*[_type == 'blog']  | order(_updatedAt asc){
