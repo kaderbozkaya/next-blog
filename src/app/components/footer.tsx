@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Footer() {
+const Footer = () => {
   return (
     <div>
         <footer className="text-gray-600 body-font">
@@ -90,7 +90,6 @@ function Footer() {
     </span>
   </div>
 </footer>
-
 
     </div>
   )
