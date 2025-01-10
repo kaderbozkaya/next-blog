@@ -5,9 +5,9 @@ import React, { useState, useEffect } from 'react';
 const getStoredComments = (): string[] => {
   try {
     const storedComments = localStorage.getItem('comments');
-    return storedComments ? JSON.parse(storedComments) : [];
+    return storedComments ? JSON.parse(storedComments) : []; //string alınan veriyi diziye çevirir
   } catch (error) {
-    console.error("Error parsing localStorage data:", error);
+    console.error("Error parsing localStorage data:", error); //json çalışmazsa veya hata oluşursa
     return [];
   }
 };
@@ -22,8 +22,8 @@ const storeComments = (comments: string[]) => {
 };
 
 const CommentBox = () => {
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState<string[]>([]);
+  const [comment, setComment] = useState(''); //mevcut yorumu saklamak için
+  const [comments, setComments] = useState<string[]>([]); //tüm yorumların listesini saklar
 
   // Sayfa yüklendiğinde yorumları yerel depolamadan al
   useEffect(() => {
@@ -32,7 +32,7 @@ const CommentBox = () => {
 
   // Yorum ekleme fonksiyonu
   const addComment = () => {
-    if (!comment.trim()) return; // Boş yorumları ekleme
+    if (!comment.trim()) return; //boş veyaa boşluk içeren yorumları eklemeyi engeller
 
     const updatedComments = [...comments, comment.trim()];
     setComments(updatedComments); // Yeni durumu güncelle
