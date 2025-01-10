@@ -1,51 +1,78 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+'use client'
+import React, { useState, useEffect } from 'react';
 
-interface Comment {
-    id:number,
-    text:string
-}
-const CommentSection:React.FC=()=> {
-    const [comments,setComments]=useState<Comment[]>([]) //tüm yorumların listesini tutar
-    const [newComment,setNewComment]=useState<string>("")// kullanıcının giriş alanına yazdığı yeni yorumu saklar
+// Yerel depolamadan yorumları al
+const getStoredComments = (): string[] => {
+  try {
+    const storedComments = localStorage.getItem('comments');
+    return storedComments ? JSON.parse(storedComments) : [];
+  } catch (error) {
+    console.error("Error parsing localStorage data:", error);
+    return [];
+  }
+};
 
-    //sayfa yğklendiğinde localdeki yorumları alıp comments statine yükler
-    useEffect(()=> {
-        const storedComments=localStorage.getItem("comments")
-        if(storedComments) {
-            setComments(JSON.parse(storedComments))
-        }
-    },[])
+// Yerel depolamaya yorumları kaydet
+const storeComments = (comments: string[]) => {
+  try {
+    localStorage.setItem('comments', JSON.stringify(comments));
+  } catch (error) {
+    console.error("Error saving to localStorage:", error);
+  }
+};
 
-    useEffect(()=> {
-        localStorage.setItem("comments", JSON.stringify(comments))
-    },[comments])
-//yeni yorum ekleme fonksiyonu
-    const handleAddComment=()=> {
-        if(newComment.trim()){
-            const newCommentObj:Comment= {
-                id:Date.now(),
-                text:newComment
-            }
-            setComments([...comments,newCommentObj]) //mevcut yorumların sonuna yeni yorum ekler
-            setNewComment("") //giriş alanını temizler
-        }
-    }
+const CommentBox = () => {
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<string[]>([]);
+
+  // Sayfa yüklendiğinde yorumları yerel depolamadan al
+  useEffect(() => {
+    setComments(getStoredComments());
+  }, []);
+
+  // Yorum ekleme fonksiyonu
+  const addComment = () => {
+    if (!comment.trim()) return; // Boş yorumları ekleme
+
+    const updatedComments = [...comments, comment.trim()];
+    setComments(updatedComments); // Yeni durumu güncelle
+    setComment(''); // Giriş alanını temizle
+    storeComments(updatedComments); // Yerel depolamaya kaydet
+  };
+
   return (
-    <div>
-        <h3>Comments</h3>
-        <div style={{marginBottom:"1rem"}}>
-            <input type='text' value={newComment} onChange={(e)=>setNewComment(e.target.value)} placeholder='Write a comment...' className='p-2 w-[70%] mr-2 rounded border border-s-orange-400 '></input>
-
-            <button onClick={handleAddComment} className='py-2 px-4 bg-orange-700 rounded cursor-pointer'>Post Comment</button>
-        </div>
-        <ul>
-           {comments.map((comment)=> (
-            <li key={comment.id}>{comment.text}</li>
-           ))} 
-        </ul>
+    <div className="p-4">
+      <h1 className="text-3xl font-bold mt-4 text-purple-500">Comment Box</h1>
+      <input
+        type="text"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Write your comment"
+        className="border border-purple-500 mt-3 w-80 p-2 rounded"
+      />
+      <br />
+      <button
+        className="bg-purple-500 text-white w-36 mt-3 p-2 rounded hover:bg-purple-600 transition"
+        onClick={addComment}
+      >
+        Add Comment
+      </button>
+      <div className="mt-4">
+        <h2 className="text-xl font-semibold">All Comments:</h2>
+        {comments.length === 0 ? (
+          <p className="text-gray-500">No comments yet. Add your comment!</p>
+        ) : (
+          <ul className="mt-2 space-y-1">
+            {comments.map((data, index) => (
+              <li key={index} className="border-b border-gray-300 pb-1">
+                {data}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CommentSection
+export default CommentBox;

@@ -1,3 +1,4 @@
+import CommentBox from "@/app/components/comment";
 import { client } from "@/sanity/lib/client"; //sanityden veri çekmek için oluşturulmuş createClient fonksiyonuyla yapılandırışmış bir client
 import { urlFor } from "@/sanity/lib/image";
 import { PortableText } from "next-sanity"; //block content türlerini düzgün bir şekilde render edilmesi için bir bileşen
@@ -34,7 +35,7 @@ export default async function page({params:{slug}}:{params:{slug:string}}) { //s
       {data.Paragraph}
       </p>
       </section>
-      {/* Author Section (Image & Bio) */}
+ 
       <section className="px-2 sm:px-8 md:px-12 flex gap-2 xs:gap-4 sm:gap-6 items-start xs:items-center justify-start">
         {/*eklenen sabit görsel sanityden de çekilebilir */}
         <Image
@@ -47,9 +48,10 @@ export default async function page({params:{slug}}:{params:{slug:string}}) { //s
         
       </section>
 
-      {/* Main Body of Blog */}
+      {/* Blogun ana sayfası */}
       <section className="text-lg leading-normal text-dark/80 dark:text-light/80">
         <PortableText value={data.block} />
+        <CommentBox/>
       </section>
 
     </article>
